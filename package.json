@@ -1,0 +1,44 @@
+{
+  "name": "flavors-command",
+  "version": "0.0.0-development",
+  "description": "Flavors (Node.js configuration management library) command loader and runner.",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha test/index.js",
+    "lint": "eslint *.js test/**/*.js",
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
+  },
+  "repository": "flavors-js/flavors-command",
+  "keywords": [
+    "node.js",
+    "configuration",
+    "management",
+    "config",
+    "resolver"
+  ],
+  "author": {
+    "name": "Michael Ledin",
+    "email": "michael@ledin.me",
+    "url": "https://github.com/mxl"
+  },
+  "engines": {
+    "node": ">= 6"
+  },
+  "files": [
+    "index.js"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/flavors-js/flavors-command/issues"
+  },
+  "homepage": "https://github.com/flavors-js/flavors-command#readme",
+  "devDependencies": {
+    "eslint": "^4.11.0",
+    "mocha": "^4.0.1",
+    "semantic-release": "^8.2.0",
+    "semantic-release-cli": "^3.2.5"
+  },
+  "dependencies": {
+    "flavors-runner": "^4.0.2"
+  }
+}
