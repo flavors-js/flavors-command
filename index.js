@@ -29,7 +29,7 @@ module.exports = flavorsOptions => {
   }
 
   if (typeof command === 'function') {
-    command();
+    command(args);
   } else {
     const child = require('flavors-runner')(Object.assign({}, flavorsOptions, {
       command: {command},
