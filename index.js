@@ -11,26 +11,31 @@ module.exports = flavorsOptions => {
 
   const args = process.argv.slice(argIndex);
 
-  if (command === undefined) {
-    command = {
-      command: process.argv[2],
-      args: process.argv.slice(3)
-    };
-  } else if (args.length > 0) {
-    if (typeof command === 'string') {
-      command = {
-        command,
-        args
-      };
-    } else if (typeof command === 'object') {
-      command.args = command.args || [];
-      command.args.push(...args);
-    }
-  }
-
   if (typeof command === 'function') {
     command(...args);
   } else {
+    if (command === undefined) {
+      command = {
+        command: process.argv[2],
+        args: process.argv.slice(3)
+      };
+    } else {
+      if (typeof command === 'object' && typeof command.command === 'function') {
+        command = command.command;
+      } else if (args.length > 0) {
+        if (typeof command === 'string') {
+          command = {
+            command,
+            args
+          };
+        } else if (typeof command === 'object') {
+          command.args = command.args || [];
+          command.args.push(...args);
+        }
+      }
+    }
+
+
     const child = require('flavors-runner')(Object.assign({}, flavorsOptions, {
       command: {command},
       spawnOptions: {
