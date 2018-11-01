@@ -1,15 +1,19 @@
 'use strict';
 
-module.exports = flavorsOptions => {
+module.exports = (flavorsOptions, ...commandAndArgs) => {
   let command = require('flavors')(flavorsOptions.configName,
     Object.assign({}, flavorsOptions, { configFileName: 'command' }));
 
-  let argIndex = 2;
-  for (; argIndex < process.argv.length && typeof command === 'object' && command.command === undefined; argIndex++) {
-    command = command[process.argv[argIndex]];
+  if (!commandAndArgs) {
+    commandAndArgs = process.argv.slice(2);
   }
 
-  const args = process.argv.slice(argIndex);
+  let argIndex = 0;
+  for (; argIndex < commandAndArgs.length && typeof command === 'object' && command.command === undefined; argIndex++) {
+    command = command[commandAndArgs[argIndex]];
+  }
+
+  const args = commandAndArgs.slice(argIndex);
 
   if (typeof command === 'function') {
     command = command(...args);
@@ -18,12 +22,7 @@ module.exports = flavorsOptions => {
     }
   }
 
-  if (command === undefined) {
-    command = {
-      command: process.argv[2],
-      args: process.argv.slice(3)
-    };
-  } else {
+  if (command) {
     if (typeof command === 'object' && typeof command.command === 'function') {
       command = command.command;
     } else if (args.length > 0) {
@@ -37,8 +36,12 @@ module.exports = flavorsOptions => {
         command.args.push(...args);
       }
     }
+  } else {
+    command = {
+      command: commandAndArgs[0],
+      args: commandAndArgs.slice(1)
+    };
   }
-
 
   const child = require('flavors-runner')(Object.assign({}, flavorsOptions, {
     command: { command },
