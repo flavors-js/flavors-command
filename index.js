@@ -4,7 +4,7 @@ module.exports = (flavorsOptions, ...commandAndArgs) => {
   let command = require('flavors')(flavorsOptions.configName,
     Object.assign({}, flavorsOptions, { configFileName: 'command' }));
 
-  if (!commandAndArgs) {
+  if (commandAndArgs.length === 0) {
     commandAndArgs = process.argv.slice(2);
   }
 
