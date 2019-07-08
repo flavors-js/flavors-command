@@ -32,11 +32,11 @@
   },
   "homepage": "https://github.com/flavors-js/flavors-command#readme",
   "devDependencies": {
-    "eslint": "^5.8.0",
-    "mocha": "^5.2.0",
-    "semantic-release": "^15.10.6",
-    "semantic-release-cli": "^4.0.9",
-    "travis-deploy-once": "^5.0.9"
+    "eslint": "^6.0.1",
+    "mocha": "^6.1.4",
+    "semantic-release": "^15.13.18",
+    "semantic-release-cli": "^5.1.1",
+    "travis-deploy-once": "^5.0.11"
   },
   "dependencies": {
     "flavors-runner": "^4.0.2"
