@@ -26,6 +26,9 @@
   "files": [
     "index.js"
   ],
+  "bin": {
+    "flavors-command": "./index.js"
+  },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/flavors-js/flavors-command/issues"

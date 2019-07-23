@@ -1,8 +1,9 @@
+#!/usr/bin/env node
 'use strict';
 
 module.exports = (flavorsOptions, ...commandAndArgs) => {
   let command = require('flavors')(flavorsOptions.configName,
-    Object.assign({}, flavorsOptions, { configFileName: 'command' }));
+    Object.assign({}, flavorsOptions, {configFileName: 'command'}));
 
   if (commandAndArgs.length === 0) {
     commandAndArgs = process.argv.slice(2);
@@ -43,8 +44,8 @@ module.exports = (flavorsOptions, ...commandAndArgs) => {
     };
   }
 
-  const child = require('flavors-runner')(Object.assign({}, flavorsOptions, {
-    command: { command },
+  const child = require('flavors-runner')(require('deepmerge')(flavorsOptions, {
+    command: {command},
     spawnOptions: {
       stdio: 'inherit'
     }
@@ -55,3 +56,28 @@ module.exports = (flavorsOptions, ...commandAndArgs) => {
     child.kill('SIGINT');
   });
 };
+
+module.exports.optionsFile = 'flavorsOptions.js';
+module.exports.localOptionsFile = 'flavorsOptions.local.js';
+
+if (require.main === module) {
+  const path = require('path'),
+    localOptionsPath = process.env.FLAVORS_LOCAL_OPTIONS_PATH || path.resolve(process.cwd(), module.exports.localOptionsFile),
+    optionsPath = process.env.FLAVORS_OPTIONS_PATH || path.resolve(process.cwd(), module.exports.optionsFile),
+    localOptions = (() => {
+      try {
+        return require(localOptionsPath);
+      } catch (e) {
+        if (e.code !== 'MODULE_NOT_FOUND') {
+          throw e;
+        }
+      }
+    })(),
+    options = require(optionsPath),
+    envOptions = {};
+
+  if (process.env.FLAVORS_CONFIG_NAME) {
+    envOptions.configName = process.env.FLAVORS_CONFIG_NAME;
+  }
+  module.exports(Object.assign(options, localOptions, envOptions));
+}

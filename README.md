@@ -23,6 +23,26 @@ It allows to load and run commands in the pre-configured environment.
 $ npm install --save-dev flavors-command
 ```
 
+## Usage
+
+### As module
+
+```javascript
+const options = {configName: 'myConfig', spawnOptions: {shell: true}};
+require('flavors-command')(
+  options,
+  'echo', '$value1', '$value2' // command and arguments
+);
+```
+
+#### `options` parameter
+
+Options for [flavors-runner](https://github.com/flavors-js/flavors-runner#options) and [flavors](https://github.com/flavors-js/flavors-runner#options).
+
+#### command and arguments parameters
+
+Command to run and its arguments.
+
 ## Maintainers
 
 - [@mxl](https://github.com/mxl)
