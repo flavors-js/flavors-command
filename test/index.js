@@ -44,4 +44,11 @@ describe('flavors-command', () => {
   it('uses custom flavors config name', () => {
     outputEquals(['echo', '$value'], options('customConfigName', {FLAVORS_CONFIG_NAME: 'custom'}), '1');
   });
+
+  it('uses custom flavors options directory', () => {
+    it('uses options from flavors options file', () => {
+      const optionsDir = testPath('customFlavorsOptionsDir');
+      outputEquals(['echo', '$value'], options('', {FLAVORS_OPTIONS_PATH: optionsDir, FLAVORS_LOCAL_OPTIONS_PATH: optionsDir}), '1');
+    });
+  });
 });

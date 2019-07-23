@@ -60,24 +60,36 @@ module.exports = (flavorsOptions, ...commandAndArgs) => {
 module.exports.optionsFile = 'flavorsOptions.js';
 module.exports.localOptionsFile = 'flavorsOptions.local.js';
 
-if (require.main === module) {
-  const path = require('path'),
-    localOptionsPath = process.env.FLAVORS_LOCAL_OPTIONS_PATH || path.resolve(process.cwd(), module.exports.localOptionsFile),
-    optionsPath = process.env.FLAVORS_OPTIONS_PATH || path.resolve(process.cwd(), module.exports.optionsFile),
-    localOptions = (() => {
-      try {
-        return require(localOptionsPath);
-      } catch (e) {
-        if (e.code !== 'MODULE_NOT_FOUND') {
-          throw e;
-        }
-      }
-    })(),
-    options = require(optionsPath),
-    envOptions = {};
-
-  if (process.env.FLAVORS_CONFIG_NAME) {
-    envOptions.configName = process.env.FLAVORS_CONFIG_NAME;
-  }
-  module.exports(Object.assign(options, localOptions, envOptions));
+if (require.main !== module) {
+  return;
 }
+
+// eslint-disable-next-line no-inner-declarations
+function resolveOptionsPath(customPath, optionsFile) {
+  return customPath
+    ? (customPath.endsWith('.js')
+      ? customPath
+      : path.resolve(customPath, optionsFile))
+    : path.resolve(process.cwd(), optionsFile);
+}
+
+const path = require('path'),
+  localOptionsPath = resolveOptionsPath(process.env.FLAVORS_LOCAL_OPTIONS_PATH, module.exports.localOptionsFile),
+  optionsPath = resolveOptionsPath(process.env.FLAVORS_OPTIONS_PATH, module.exports.optionsFile),
+  localOptions = (() => {
+    try {
+      return require(localOptionsPath);
+    } catch (e) {
+      if (e.code !== 'MODULE_NOT_FOUND') {
+        throw e;
+      }
+    }
+  })(),
+  options = require(optionsPath),
+  envOptions = {};
+
+if (process.env.FLAVORS_CONFIG_NAME) {
+  envOptions.configName = process.env.FLAVORS_CONFIG_NAME;
+}
+
+module.exports(Object.assign(options, localOptions, envOptions));
