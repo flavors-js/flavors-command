@@ -1,9 +1,11 @@
 #!/usr/bin/env node
 'use strict';
 
+const merge = require('deepmerge');
+
 module.exports = (flavorsOptions, ...commandAndArgs) => {
   let command = require('flavors')(flavorsOptions.configName,
-    Object.assign({}, flavorsOptions, {configFileName: 'command'}));
+    merge.all([flavorsOptions, {configFileName: 'command'}]));
 
   if (commandAndArgs.length === 0) {
     commandAndArgs = process.argv.slice(2);
@@ -44,7 +46,7 @@ module.exports = (flavorsOptions, ...commandAndArgs) => {
     };
   }
 
-  const child = require('flavors-runner')(require('deepmerge')(flavorsOptions, {
+  const child = require('flavors-runner')(merge(flavorsOptions, {
     command: {command},
     spawnOptions: {
       stdio: 'inherit'
@@ -84,6 +86,7 @@ const path = require('path'),
         throw e;
       }
     }
+    return {};
   })(),
   options = require(optionsPath),
   envOptions = {};
@@ -92,4 +95,5 @@ if (process.env.FLAVORS_CONFIG_NAME) {
   envOptions.configName = process.env.FLAVORS_CONFIG_NAME;
 }
 
-module.exports(Object.assign(options, localOptions, envOptions));
+const o = merge.all([options, localOptions, envOptions]);
+module.exports(o);

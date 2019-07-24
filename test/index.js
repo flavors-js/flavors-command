@@ -18,7 +18,7 @@ function outputEquals(args, options, expected) {
 function options(dir, env = {}) {
   return {
     cwd: testPath(dir),
-    env: Object.assign(process.env, env)
+    env: Object.assign({}, process.env, env)
   };
 }
 
