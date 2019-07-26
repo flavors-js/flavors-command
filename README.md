@@ -12,6 +12,8 @@
 [![Join the chat at https://gitter.im/flavors-js/flavors](https://badges.gitter.im/flavors-js/flavors.svg)](https://gitter.im/flavors-js/flavors?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 </div>
 
+**This module is deprecated. It was embedded in [flavors](https://github.com/flavors-js/flavors). See [flavors command runner](https://github.com/flavors-js/flavors#command-runner).**
+
 # flavors-command
 
 Command loader and runner powered by [Flavors](https://github.com/flavors-js/flavors) configuration management library.<br>
